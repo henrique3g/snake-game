@@ -1,0 +1,13 @@
+{
+  "name": "game-snake",
+  "version": "1.0.0",
+  "description": "Game snake",
+  "main": "index.js",
+  "repository": "https://github.com/henrique3g/game-snake",
+  "author": "J.Henrique <jhenriqueribeirodesa@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "jest": "^25.1.0"
+  }
+}

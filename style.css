@@ -1,5 +1,22 @@
+body {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
 #game {
-	width: 200rem;
-	height: 100rem;
-	image-rendering: pixelated;
+  width: 40%;
+  height: 40%;
+  image-rendering: pixelated;
+  border: 1px solid #000;
+  padding: 0;
+  margin-top: 4.5%;
+}
+
+.game-over {
+  color: #f00;
+  font-size: 5rem;
+  position: absolute;
+  z-index: 10;
+  visibility: hidden;
 }
