@@ -65,6 +65,25 @@ class Snake {
     }
   }
 
+  checkColision() {
+    let colid = false;
+    if (
+      this.body[0].x < 0 ||
+      this.body[0].x >= this.field.width ||
+      this.body[0].y < 0 ||
+      this.body[0].y >= this.field.height
+    ) {
+      colid = true;
+    }
+    this.body.forEach((member, index) => {
+      if (this.head === member && index !== 0) {
+        colid = true;
+        console.log("colid member");
+      }
+    });
+    return colid;
+  }
+
   checkGetFruit() {
     this.field.apples.forEach((apple, index) => {
       if (apple.x === this.head.x && apple.y === this.head.y) {
@@ -110,7 +129,7 @@ class Field {
       this.snake.checkGetFruit();
       this.snake.move();
       this.render();
-    }, 50);
+    }, 500);
     this.intervalGenerateFruits = setInterval(() => {
       this.addApple();
     }, 1000);
@@ -119,12 +138,14 @@ class Field {
   }
 
   isGameOver() {
-    if (
+    /* if (
       this.snake.body[0].x < 0 ||
       this.snake.body[0].x >= this.width ||
       this.snake.body[0].y < 0 ||
       this.snake.body[0].y >= this.height
-    ) {
+	) */
+
+    if (this.snake.checkColision()) {
       this.gameOver = true;
       this.gamerOverTag.style.visibility = "visible";
     }
