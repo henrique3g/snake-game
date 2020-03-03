@@ -1,6 +1,6 @@
 # Game Snake
 
-## Describe
+## Description
 
 Esse é um pequeno jogo da cobrinha feito com javascript vanilla, html, css.  
 Inicialmente é um jogo single player.
