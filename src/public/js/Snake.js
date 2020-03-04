@@ -16,12 +16,16 @@ export default class Snake {
     ];
     this.head = this.body[0];
     this.direction = "up";
+    this._lastDirection = "up";
     this.speed = 1;
     this.field = field;
   }
 
   move() {
     if (this.field.gameOver) return;
+    if (!this.checkNewDirection(this.direction))
+      this.direction = this._lastDirection;
+    else this._lastDirection = this.direction;
     for (let i = this.body.length - 1; i >= 0; i--) {
       if (this.direction === "up") {
         if (i === 0) {
@@ -90,18 +94,19 @@ export default class Snake {
   }
 
   changeDirection(newDirection) {
+    if (this.checkNewDirection(newDirection)) this.direction = newDirection;
+  }
+
+  checkNewDirection(newDirection) {
     const inverses = {
       up: 0,
       right: 1,
       down: 2,
       left: 3
     };
-    console.log(
-      inverses[this.direction],
-      inverses[newDirection],
-      inverses[this.direction] - inverses[newDirection]
+
+    return (
+      Math.abs(inverses[this._lastDirection] - inverses[newDirection]) !== 2
     );
-    if (Math.abs(inverses[this.direction] - inverses[newDirection]) !== 2)
-      this.direction = newDirection;
   }
 }
