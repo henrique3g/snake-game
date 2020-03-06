@@ -23,10 +23,11 @@ function main() {
 
   const gameOverMsg = document.getElementById("game-over");
   const field = new Field({ x: 50, y: 50 }, ctx, gameOverMsg);
-  console.log(field);
+
   field.addApple();
   field.render();
   keyInput(field.snake);
-  console.log(field);
+
+  while (!field.gameOver) {}
 }
 main();

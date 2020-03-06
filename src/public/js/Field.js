@@ -8,6 +8,8 @@ export default class Field {
     this.apples = [];
     this.snake = new Snake(dimension, this);
     this.contextCanvas = contextCanvas;
+    this.appleSpeed = 1;
+
     this.interval = setInterval(() => {
       this.isGameOver();
       this.snake.checkGetFruit();
@@ -17,6 +19,7 @@ export default class Field {
     this.intervalGenerateFruits = setInterval(() => {
       this.addApple();
     }, 1000);
+
     this.gameOver = false;
     this.gamerOverTag = gameOverTag;
   }
@@ -37,6 +40,8 @@ export default class Field {
 
   render() {
     this.contextCanvas.clearRect(0, 0, this.width, this.height);
+
+    this.contextCanvas.drawImage(this.apples[0].img, 10, 10, 1, 1);
 
     this.contextCanvas.fillStyle = "#f00";
     this.apples.forEach(apple => {
