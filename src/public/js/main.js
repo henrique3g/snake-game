@@ -28,6 +28,16 @@ function main() {
   field.render();
   keyInput(field.snake);
 
+  const interval = setInterval(() => {
+    this.isGameOver();
+    this.snake.checkGetFruit();
+    this.snake.move();
+    this.render();
+  }, (field.snake.speed - 5) * 50);
+  const intervalGenerateFruits = setInterval(() => {
+    this.addApple();
+  }, field.app);
+
   while (!field.gameOver) {}
 }
 main();
