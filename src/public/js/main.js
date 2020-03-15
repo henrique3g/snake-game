@@ -1,7 +1,7 @@
-import Field from "./Field.js";
+import Game from "./Game.js";
 
 function keyInput(snake) {
-  addEventListener("keydown", e => {
+  window.addEventListener("keydown", e => {
     if (e.key === "ArrowUp") {
       snake.direction = "up";
     }
@@ -22,22 +22,36 @@ function main() {
   const ctx = canvas.getContext("2d");
 
   const gameOverMsg = document.getElementById("game-over");
-  const field = new Field({ x: 50, y: 50 }, ctx, gameOverMsg);
+  const game = new Game({ x: 25, y: 25 }, ctx, gameOverMsg);
+  // game.addApple();
 
-  field.addApple();
-  field.render();
-  keyInput(field.snake);
+  keyInput(game.snake);
+  window.requestAnimationFrame(loop);
 
-  const interval = setInterval(() => {
-    this.isGameOver();
-    this.snake.checkGetFruit();
-    this.snake.move();
-    this.render();
-  }, (field.snake.speed - 5) * 50);
-  const intervalGenerateFruits = setInterval(() => {
-    this.addApple();
-  }, field.app);
+  let lastMovementTime = 0;
+  let lastAddAppleTime = 0;
+  let lastRender = 0;
 
-  while (!field.gameOver) {}
+  function loop(currentTime) {
+    if (currentTime >= lastRender + 20) {
+      if (currentTime >= lastMovementTime + game.snake.movementSpeed) {
+        game.snake.move();
+        console.log("current time: " + currentTime);
+        console.log(
+          `Level = ${game.level}, Length = ${game.snake.body.length}, SnakeDelayRender = ${game.snake.movementSpeed}, appleSpeed = ${game.generateAppleSpeed}`
+        );
+        lastMovementTime = currentTime;
+      }
+
+      if (currentTime >= lastAddAppleTime + game.generateAppleSpeed) {
+        game.addApple();
+        lastAddAppleTime = currentTime;
+      }
+      game.isGameOver();
+      game.snake.checkGetFruit();
+      game.render();
+      if (!game.gameOver) window.requestAnimationFrame(loop);
+    }
+  }
 }
 main();

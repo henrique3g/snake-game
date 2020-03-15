@@ -1,5 +1,5 @@
 export default class Snake {
-  constructor(fieldDimension, field) {
+  constructor(fieldDimension, game) {
     this.body = [
       {
         x: Math.round(fieldDimension.x / 2),
@@ -17,15 +17,16 @@ export default class Snake {
     this.head = this.body[0];
     this.direction = "up";
     this._lastDirection = "up";
-    this.speed = 1;
-    this.field = field;
+    this.movementSpeed = 500;
+    this.game = game;
   }
 
   move() {
-    if (this.field.gameOver) return;
+    // if (this.field.gameOver) return;
     if (!this.checkNewDirection(this.direction))
       this.direction = this._lastDirection;
     else this._lastDirection = this.direction;
+
     for (let i = this.body.length - 1; i >= 0; i--) {
       if (this.direction === "up") {
         if (i === 0) {
@@ -70,9 +71,9 @@ export default class Snake {
     let collided = false;
     if (
       this.body[0].x < 0 ||
-      this.body[0].x >= this.field.width ||
+      this.body[0].x >= this.game.width ||
       this.body[0].y < 0 ||
-      this.body[0].y >= this.field.height
+      this.body[0].y >= this.game.height
     ) {
       collided = true;
     }
@@ -85,10 +86,26 @@ export default class Snake {
   }
 
   checkGetFruit() {
-    this.field.apples.forEach((apple, index) => {
+    this.game.apples.forEach((apple, index) => {
       if (apple.x === this.head.x && apple.y === this.head.y) {
-        this.body.push({ x: null, y: null });
-        this.field.apples.splice(index, 1);
+        this.body.push({ x: -1, y: -1 });
+        this.game.apples.splice(index, 1);
+        if ((this.body.length - 3) % 3 === 0) {
+          this.game.level = (this.body.length - 3) / 3 + 1;
+        }
+        if (this.game.level < 2) {
+          this.movementSpeed -= 100;
+          this.game.generateAppleSpeed -= 200;
+        }
+        if (this.game.level >= 2 && this.game.level < 3) {
+          this.movementSpeed -= 20;
+          this.game.generateAppleSpeed -= 100;
+        }
+        if (this.game.level >= 3 && this.movementSpeed >= 100) {
+          this.movementSpeed -= 10;
+        }
+        if (this.game.level >= 3 && this.game.generateAppleSpeed >= 1000)
+          this.game.generateAppleSpeed -= 80;
       }
     });
   }

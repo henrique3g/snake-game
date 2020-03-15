@@ -1,37 +1,20 @@
 import Apple from "./Apple.js";
 import Snake from "./Snake.js";
 
-export default class Field {
+export default class Game {
   constructor(dimension, contextCanvas, gameOverTag) {
     this.width = dimension.x;
     this.height = dimension.y;
     this.apples = [];
     this.snake = new Snake(dimension, this);
     this.contextCanvas = contextCanvas;
-    this.appleSpeed = 1;
-
-    this.interval = setInterval(() => {
-      this.isGameOver();
-      this.snake.checkGetFruit();
-      this.snake.move();
-      this.render();
-    }, 100);
-    this.intervalGenerateFruits = setInterval(() => {
-      this.addApple();
-    }, 1000);
-
+    this.level = 1;
+    this.generateAppleSpeed = 2000;
     this.gameOver = false;
     this.gamerOverTag = gameOverTag;
   }
 
   isGameOver() {
-    /* if (
-		this.snake.body[0].x < 0 ||
-		this.snake.body[0].x >= this.width ||
-		this.snake.body[0].y < 0 ||
-		this.snake.body[0].y >= this.height
-	  ) */
-
     if (this.snake.checkCollision()) {
       this.gameOver = true;
       this.gamerOverTag.style.visibility = "visible";
@@ -41,7 +24,7 @@ export default class Field {
   render() {
     this.contextCanvas.clearRect(0, 0, this.width, this.height);
 
-    this.contextCanvas.drawImage(this.apples[0].img, 10, 10, 1, 1);
+    // this.contextCanvas.drawImage(this.apples[0].img, 0, 0, 25, 25);
 
     this.contextCanvas.fillStyle = "#f00";
     this.apples.forEach(apple => {
@@ -55,8 +38,9 @@ export default class Field {
   }
 
   addApple() {
-    const x = Math.round(Math.random() * 50);
-    const y = Math.round(Math.random() * 50);
+    if (this.apples.length >= 15) return;
+    const x = Math.round(Math.random() * this.width);
+    const y = Math.round(Math.random() * this.height);
     this.apples.push(new Apple({ x, y }));
   }
 }
